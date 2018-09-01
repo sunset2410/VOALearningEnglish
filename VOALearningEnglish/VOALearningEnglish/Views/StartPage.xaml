@@ -1,0 +1,223 @@
+﻿<Page
+    x:Class="VOALearningEnglish.Views.StartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VOALearningEnglish.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    DataContext="{Binding StartPageInstance, Source={StaticResource Locator}}"
+    xmlns:media="using:Microsoft.Xaml.Interactions.Media"
+    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
+    SizeChanged ="Page_SizeChanged"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///../Common/ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Storyboard x:Name="MoreListNewClose" BeginTime="00:00:00.000" Duration="00:00:00.200">
+                <DoubleAnimation Storyboard.TargetName="moreListNewsButon" 
+                             Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)" 
+                             From="0" To="180" BeginTime="00:00:00.000" Duration="00:00:00.200" />
+            </Storyboard>
+            <Storyboard x:Name="MoreListNewOpen" BeginTime="00:00:00.000" Duration="00:00:00.200">
+                <DoubleAnimation Storyboard.TargetName="moreListNewsButon" 
+                             Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)" 
+                             To="0" BeginTime="00:00:00.000" Duration="00:00:00.200" />
+            </Storyboard>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="TitleBar" Grid.Row="0" Background="Transparent">
+            <Rectangle x:Name="BackgroundElement" Fill="Transparent"/>
+            <Grid Background="White">
+                <Image Height="29" Width="130" Margin="1,1,1,1" Source="ms-appx:///../Images/voa_icon.png"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            </Grid>
+        </Grid>
+        <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay"  IsPaneOpen="{Binding Path = IsPaneOpen}"
+                   CompactPaneLength="54" OpenPaneLength="210" Margin="0,0,0,0" Grid.Row="1" >
+            <SplitView.Pane>
+                <StackPanel Background="Black">
+                    <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Foreground="White" FontSize="18"
+                    Width="55" Height="45" Command="{Binding ClickChangePanel}" Style="{StaticResource baseButton}" Visibility="{Binding Path=IsShowSmallScreenMode}" >
+                    </Button>
+                    <Rectangle 
+                     Height="1"
+                     Fill="White"
+                     Visibility="{Binding Path=IsShowSmallScreenMode}" 
+                     />
+                    <Button x:Name="BackButton" ToolTipService.ToolTip="Back"
+                            FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" Foreground="White" FontSize="18"
+                    Width="55" Height="45" Command="{Binding ClickBackButton}" Style="{StaticResource baseButton}">
+                    </Button>
+                    <Rectangle 
+                     Height="1"
+                     Fill="White" HorizontalAlignment="Right" Width="210"
+                     />
+                    <StackPanel Name="oxford_group" Orientation="Vertical" Visibility="{Binding Path=IsShowSmallScreenMode}" >
+                        <TextBlock Text="Oxford" Visibility="{Binding Path= IsShowModeNews}" Height="20" Margin="6,0,0,0"
+                               FontSize="13" Foreground="White" FontWeight="Bold"/>
+                        <Grid Background="Black" Visibility="{Binding Path= IsShowModeNews}">
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleSwitch
+                                      Margin="-65,0,0,0"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      ToolTipService.ToolTip="{Binding TextToolTipDictionary}"
+                                      IsOn="{Binding IsDictionnaryOn,
+                                                     Mode=OneTime}"
+                                      Style="{StaticResource RED_ToggleSwitch}">
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Core:EventTriggerBehavior EventName="Toggled">
+                                            <Core:InvokeCommandAction Command="{Binding ClickOnOffDictionnaryToggleSwitch}" />
+                                        </Core:EventTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+                                </ToggleSwitch>
+                                <TextBlock Text="Oxford Dictionary" FontSize="14" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="White"/>
+                            </StackPanel>
+                        </Grid>
+                        <Rectangle Visibility="{Binding Path= IsShowModeNews}"
+                            Height="1" Fill="White" />
+                        <TextBlock Text="Contents" Height="22" Margin="1,0,0,0" FontSize="12" Foreground="White"
+                                   FontWeight="Bold" VerticalAlignment="Center" />
+                        <Button  x:Name="moreListNewsButon" FontFamily="Segoe MDL2 Assets" Content="&#xE018;" 
+                             ToolTipService.ToolTip="{Binding TextToolTipListNews}"  Visibility="{Binding Path=IsShowSmallScreenMode}" 
+                             Foreground="White" RenderTransformOrigin="0.5,0.5" Background="Transparent"
+                             Width="50" Height="50" Command="{Binding ClickMoreListNews}" Style="{StaticResource baseButton}" FontSize="26" Margin="1,3,0,0">
+                            <Button.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Button.RenderTransform>
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:DataTriggerBehavior Binding="{Binding Path=ListNewsAnimation}" Value="Close">
+                                    <media:ControlStoryboardAction ControlStoryboardOption="Play" Storyboard="{StaticResource MoreListNewClose}" />
+                                </Core:DataTriggerBehavior>
+                                <Core:DataTriggerBehavior Binding="{Binding Path=ListNewsAnimation}" Value="Open">
+                                    <media:ControlStoryboardAction ControlStoryboardOption="Play" Storyboard="{StaticResource MoreListNewOpen}" />
+                                </Core:DataTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </Button>
+                    </StackPanel>
+                    <ScrollViewer Name="List_Chanel_News">
+                    <ListView Name="MyListNewChanels" Height="Auto" ItemsSource="{Binding Path = DataListNewChanels}" IsItemClickEnabled="True" Visibility="{Binding Path= IsShowLargeListNews}"
+                          SelectedItem="{Binding SelectedItemNewChanel ,Mode=TwoWay}" Margin="0" Padding="0">
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="SelectionChanged">
+                                <Core:InvokeCommandAction Command="{Binding SelectedItemNewChanelCommand}" CommandParameter="{Binding Path=SelectedItem, ElementName= MyListNewChanels}"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource LVItemExpandedCustom}">
+                                <Setter Property= "Margin" Value="-6,3,2,3" />
+                                <Setter Property="BorderThickness" Value="0.1" />
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="38" Height="38" ToolTipService.ToolTip="{Binding TextToolTip}">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding Path= ImageSource}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Text="{Binding TextItem}" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                   </ScrollViewer>
+                </StackPanel>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid Name="content">
+                    <Grid Name="News" Visibility="{Binding Path= IsShowModeNews}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <WebView Name="mainView" Grid.Row="0" Visibility="Visible" Grid.Column="0"  Source="{Binding Path= ServerPath, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ContentLoading">
+                                        <Core:InvokeCommandAction Command="{Binding onDisplay_ContentLoading}" CommandParameter="{Binding ElementName = mainView}" />
+                                    </Core:EventTriggerBehavior>
+                                    <Core:EventTriggerBehavior EventName="DOMContentLoaded">
+                                        <Core:InvokeCommandAction Command="{Binding onDisplay_ContentLoaded}" CommandParameter="{Binding ElementName = mainView}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </WebView>
+                            <ads:AdControl Width="728" Height="90" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                               ApplicationId="9mzhm9fq7zd3" AdUnitId="11678471" Visibility="{Binding Path = IsShowSmallScreenMode}"/>
+                        </Grid>
+                        <Grid Grid.Column="1" VerticalAlignment="Stretch" Width="300" Visibility="{Binding Path= IsShowSubView}">
+                            <WebView Name="subView"  Width="300" Source="{Binding Path= DictURL}" Visibility="{Binding Path= IsShowSubView}" 
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="1">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ContentLoading">
+                                        <Core:InvokeCommandAction Command="{Binding SubView_ContentLoading}" CommandParameter="{Binding ElementName = subView}" />
+                                    </Core:EventTriggerBehavior>
+                                    <Core:EventTriggerBehavior EventName="DOMContentLoaded">
+                                        <Core:InvokeCommandAction Command="{Binding SubView_ContentLoaded}" CommandParameter="{Binding ElementName = subView}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </WebView>
+                            <ads:AdControl Width="300" Height="250" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            ApplicationId="9mzhm9fq7zd3" AdUnitId="11678472"/>
+                        </Grid>
+                        <ProgressRing Name="ringProgress" Grid.Column="0" Width="100" Height="100" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" IsActive="{Binding Path= IsActiveProgressRing}"/>
+                    </Grid>
+                    <Grid Name="Videos" Background="#222222" Visibility="{Binding Path= IsShowModeVideos}">
+                        <StackPanel Orientation="Vertical">
+                            <ads:AdControl Width="728" Height="90" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                        ApplicationId="9mzhm9fq7zd3" AdUnitId="11678473" Visibility="{Binding Path = IsShowSmallScreenMode}"/>
+                            <GridView  Name="ListVideo" Height="Auto" ItemsSource="{Binding Path = VideoList}" ItemClick="ListVideo_ItemClick"
+                                       MaxHeight="700" IsItemClickEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="50,10,2,2">
+                                <GridView.ItemContainerStyle>
+                                    <Style TargetType="GridViewItem" BasedOn="{StaticResource GVItemExpanded}">
+                                        <Setter Property= "Margin" Value="3,3,3,3"/>
+                                        <Setter Property="BorderThickness" Value="0.1" />
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapGrid MaximumRowsOrColumns="6" Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="350" Height="250" Visibility="{Binding Path= IsShowVideo}">
+                                            <StackPanel Orientation="Vertical" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Image Source="{Binding Path= Thumbnail}" Width="320" Height="180" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Title}" Width="320" Height="20" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"
+                                                HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding Time}" Width="200" Height="20" TextTrimming="CharacterEllipsis" Margin="0,0,0,0"
+                                                HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </StackPanel>
+                        <ProgressRing Name="ringProgressLoadvideo" Width="100" Height="100" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" IsActive="{Binding Path= IsActiveProgressRingLoadVideo}"/>
+                    </Grid>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>

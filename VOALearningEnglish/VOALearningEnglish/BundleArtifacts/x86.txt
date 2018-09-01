@@ -1,0 +1,1 @@
+MainPackage=E:\Buid Code Store\VOALearningEnglish_15_4_2018\VOALearningEnglish_15_4_2018\VOALearningEnglish\bin\x86\Release\VOALearningEnglish_1.2.5.0_x86.appx
