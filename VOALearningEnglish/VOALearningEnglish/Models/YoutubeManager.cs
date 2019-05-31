@@ -21,8 +21,8 @@ namespace VOALearningEnglish.Models
         YouTubeService youtubeService = new YouTubeService(
                 new BaseClientService.Initializer
                 {
-                    ApiKey = "AIzaSyBpHmkpOxtY08WzXqO__vPSSevHj839sOY",
-                    ApplicationName = "Youtube"
+                    ApiKey = "AIzaSyBpHmkpOxtY08WzXq",
+                    ApplicationName = "YTube"
                 });
 
         public async Task<List<YoutubeVideo>> GetListVideos(string NameChannel, CancellationToken token)
